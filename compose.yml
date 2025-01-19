@@ -1,0 +1,22 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.0.5-management-alpine
+    container_name: rabbit-batch
+    restart: unless-stopped
+    ports:
+      - 5673:5672
+      - 15673:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_batch_data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq_batch_network
+
+volumes:
+  rabbitmq_batch_data:
+
+networks:
+  rabbitmq_batch_network:
+    driver: bridge
