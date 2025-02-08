@@ -1,0 +1,76 @@
+{
+  "users": [
+    {
+      "name": "consumer",
+      "password_hash": "nD1VITEaRDfwEudXHeC3RK+PWcAps+9yMeY83KvrsQhiboAI",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "management"
+    },
+    {
+      "name": "guest",
+      "password_hash": "RJdNbXXlsM8P0Zh5amHfvG5BytqAS55ItIZhTHKD5TJpjf9r",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    },
+    {
+      "name": "batch_consuming"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "batch_consuming",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "consumer",
+      "vhost": "batch_consuming",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "batch_exchange",
+      "vhost": "batch_consuming",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "batch_queue",
+      "vhost": "batch_consuming",
+      "durable": true,
+      "auto_delete": false
+    }
+  ],
+  "bindings": [
+    {
+      "source": "batch_exchange",
+      "vhost": "batch_consuming",
+      "destination": "batch_queue",
+      "destination_type": "queue",
+      "routing_key": "batch_key",
+      "arguments": {}
+    }
+  ]
+}

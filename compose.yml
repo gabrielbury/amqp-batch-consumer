@@ -1,21 +1,23 @@
 services:
   rabbitmq:
-    image: rabbitmq:4.0.5-management-alpine
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
     container_name: rabbit-batch
     restart: unless-stopped
     ports:
       - 5673:5672
       - 15673:15672
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbitmq_batch_data:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
     networks:
       - rabbitmq_batch_network
 
 volumes:
   rabbitmq_batch_data:
+
 
 networks:
   rabbitmq_batch_network:
